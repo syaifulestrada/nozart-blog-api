@@ -2,17 +2,15 @@ import mysql from "mysql2/promise";
 import dotenv from "dotenv";
 dotenv.config();
 
-async function connectDB() {
-    try {
-        return mysql.createConnection({
-            host: process.env.DB_HOSTNAME,
-            user: process.env.DB_USERNAME,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME,
-        });
-    } catch (error) {
-        console.error(error);
-    }
-}
+const pool = mysql.createPool({
+    host: process.env.DB_HOSTNAME,
+    port: process.env.DB_PORT,
+    database: process.env.DB_DATABASE,
+    user: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    connectionLimit: 10,
+    waitForConnections: true,
+    queueLimit: 0,
+});
 
-export default connectDB;
+export default pool;

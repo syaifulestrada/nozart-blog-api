@@ -21,12 +21,22 @@ app.get("/posts", async (req, res) => {
 });
 
 app.post("/posts", async (req, res) => {
-    const posts = await insertDataPosts(req.body.title, req.body.content);
-    res.status(200).json({
-        success: true,
-        message: "Data successfully created.",
-        data: posts,
-    });
+    try {
+        const { title, content } = req.body;
+
+        const post = await insertDataPosts(title, content);
+
+        res.status(201).json({
+            success: true,
+            message: "Data successfully created.",
+            data: post,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
 });
 
 app.listen(port, () => {
