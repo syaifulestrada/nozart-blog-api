@@ -1,18 +1,22 @@
 import express from "express";
-import connectDB from "./utils/db.js";
+import { getDataPosts } from "./controllers/postcontroller.js";
 
 const app = express();
-const port = 300;
+const port = 3000;
 
-const connection = await connectDB();
+app.get("/", (req, res) => {
+    res.json("Hello World!");
+});
 
-try {
-    const [results, fields] = await connection.query("SELECT * FROM posts");
+app.get("/posts", async (req, res) => {
+    const posts = await getDataPosts();
 
-    console.log(results);
-} catch (err) {
-    console.log(err);
-}
+    res.status(200).json({
+        success: true,
+        message: "Data successfully fetched.",
+        data: posts,
+    });
+});
 
 app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);
