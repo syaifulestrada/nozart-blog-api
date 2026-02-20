@@ -18,11 +18,20 @@ async function insertData(title, content) {
     try {
         const connection = await connectDB();
 
-        const sqlStatement = `INSERT INTO posts (title, content) VALUE ("${title}"  , "${content}")`;
+        const sqlStatementInsert = `INSERT INTO posts (title, content) VALUE (?, ?)`;
 
-        const [result] = await connection.query(sqlStatement);
+        const [result] = await connection.query(sqlStatementInsert, [
+            title,
+            content,
+        ]);
 
-        return result;
+        const sqlStatementSelectById = `SELECT * FROM posts WHERE id = ?`;
+
+        const [rows] = await connection.query(sqlStatementSelectById, [
+            result["insertId"],
+        ]);
+
+        return rows;
     } catch (err) {
         console.error(err);
     }

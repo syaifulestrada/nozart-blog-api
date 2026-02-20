@@ -1,8 +1,10 @@
-import express from "express";
+import express, { json } from "express";
 import { getDataPosts, insertDataPosts } from "./controllers/postcontroller.js";
 
 const app = express();
 const port = 3000;
+
+app.use(json());
 
 app.get("/", (req, res) => {
     res.json("Hello World!");
@@ -19,8 +21,7 @@ app.get("/posts", async (req, res) => {
 });
 
 app.post("/posts", async (req, res) => {
-    posts = await insertDataPosts(req.body.title, req.body.content);
-
+    const posts = await insertDataPosts(req.body.title, req.body.content);
     res.status(200).json({
         success: true,
         message: "Data successfully created.",
