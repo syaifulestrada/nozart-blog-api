@@ -1,5 +1,9 @@
 import express, { json } from "express";
-import { getDataPosts, insertDataPosts } from "./controllers/postcontroller.js";
+import {
+    getDataPosts,
+    insertDataPosts,
+    updateDataPosts,
+} from "./controllers/postcontroller.js";
 
 const app = express();
 const port = 3000;
@@ -29,6 +33,25 @@ app.post("/posts", async (req, res) => {
         res.status(201).json({
             success: true,
             message: "Data successfully created.",
+            data: post,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+});
+
+app.patch("/posts", async (req, res) => {
+    try {
+        const { title, content, id } = req.body;
+
+        const post = await updateDataPosts(title, content, id);
+
+        res.status(201).json({
+            success: true,
+            message: "Data successfully updated.",
             data: post,
         });
     } catch (error) {

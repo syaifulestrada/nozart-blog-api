@@ -1,4 +1,4 @@
-import { selectData, insertData } from "../models/post.js";
+import { selectData, insertData, updateData } from "../models/post.js";
 
 async function getDataPosts() {
     return await selectData();
@@ -8,4 +8,12 @@ async function insertDataPosts(title, content) {
     return insertData(title, content);
 }
 
-export { getDataPosts, insertDataPosts };
+async function updateDataPosts(title, content, id) {
+    const payload = {
+        title,
+        content,
+    };
+    return updateData(payload, id);
+}
+
+export { getDataPosts, insertDataPosts, updateDataPosts };

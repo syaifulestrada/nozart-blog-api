@@ -30,4 +30,25 @@ async function insertData(title, content) {
     }
 }
 
-export { selectData, insertData };
+async function updateData(payload, id) {
+    try {
+        const sqlSelectStatement = `SELECT * FROM  posts WHERE id = ?`;
+
+        const [rows] = await pool.query(sqlSelectStatement, [id]);
+
+        const sqlUpdateStatement = `UPDATE posts SET? WHERE id = ?`;
+
+        const data = {
+            title: payload.title || rows[0].title,
+            content: payload.content || rows[0].content,
+        };
+
+        const [result] = await pool.query(sqlUpdateStatement, [data, id]);
+
+        return result.affectedRows;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export { selectData, insertData, updateData };
