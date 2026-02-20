@@ -1,0 +1,12 @@
+{
+  "name": "nozart-blog-api",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "syaiful estrada",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
