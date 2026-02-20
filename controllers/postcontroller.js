@@ -1,7 +1,11 @@
-import { selectData } from "../models/post.js";
+import { selectData, insertData } from "../models/post.js";
 
 async function getDataPosts() {
     return await selectData();
 }
 
-export { getDataPosts };
+async function insertDataPosts(title, content) {
+    return insertData(title, content);
+}
+
+export { getDataPosts, insertDataPosts };

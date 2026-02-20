@@ -14,4 +14,18 @@ async function selectData() {
     }
 }
 
-export { selectData };
+async function insertData(title, content) {
+    try {
+        const connection = await connectDB();
+
+        const sqlStatement = `INSERT INTO posts (title, content) VALUE ("${title}"  , "${content}")`;
+
+        const [result] = await connection.query(sqlStatement);
+
+        return result;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+export { selectData, insertData };
