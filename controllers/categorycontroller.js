@@ -1,4 +1,4 @@
-import { selectData, insertData } from "../models/category.js";
+import { selectData, insertData, updateData } from "../models/category.js";
 
 async function getDataCategories() {
     return await selectData();
@@ -12,4 +12,8 @@ async function insertDataCategories(name) {
     return await insertData(name);
 }
 
-export { getDataCategories, insertDataCategories };
+async function updateDataCategories(name, id) {
+    return await updateData(name, id);
+}
+
+export { getDataCategories, insertDataCategories, updateDataCategories };
