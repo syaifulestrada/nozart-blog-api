@@ -25,7 +25,7 @@ app.get("/posts", async (req, res) => {
     });
 });
 
-app.post("/posts", async (req, res) => {
+app.post("/posts", async (req, res, next) => {
     try {
         const post = await insertDataPosts(req.body.title, req.body.content);
 
@@ -35,14 +35,11 @@ app.post("/posts", async (req, res) => {
             data: post,
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message,
-        });
+        next(error);
     }
 });
 
-app.patch("/posts/:id", async (req, res) => {
+app.patch("/posts/:id", async (req, res, next) => {
     try {
         const post = await updateDataPosts(
             req.body.title,
@@ -56,14 +53,11 @@ app.patch("/posts/:id", async (req, res) => {
             data: post,
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message,
-        });
+        next(error);
     }
 });
 
-app.delete("/posts/:id", async (req, res) => {
+app.delete("/posts/:id", async (req, res, next) => {
     try {
         const post = await deleteDataPosts(req.params.id);
 
@@ -73,11 +67,15 @@ app.delete("/posts/:id", async (req, res) => {
             data: post,
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message,
-        });
+        next(error);
     }
+});
+
+app.use((error, req, res, next) => {
+    res.status(error.status || 500).json({
+        success: false,
+        message: error.message,
+    });
 });
 
 app.listen(port, () => {
