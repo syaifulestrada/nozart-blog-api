@@ -12,4 +12,16 @@ async function selectData() {
     }
 }
 
-export { selectData };
+async function insertData(name) {
+    try {
+        const sqlInsertStatement = `INSERT INTO categories (name) VALUE (?)`;
+
+        const [result] = await pool.query(sqlInsertStatement, [name]);
+
+        return result.affectedRows;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export { selectData, insertData };
