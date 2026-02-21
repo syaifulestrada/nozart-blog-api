@@ -1,7 +1,15 @@
-import { selectData } from "../models/category.js";
+import { selectData, insertData } from "../models/category.js";
 
 async function getDataCategories() {
     return await selectData();
 }
 
-export { getDataCategories };
+async function insertDataCategories(name) {
+    if (!name) {
+        throw Object.assign(new Error("name wajib diisi."), { status: 400 });
+    }
+
+    return await insertData();
+}
+
+export { getDataCategories, insertDataCategories };
