@@ -1,4 +1,9 @@
-import { selectData, insertData, updateData } from "../models/category.js";
+import {
+    selectData,
+    insertData,
+    updateData,
+    deleteData,
+} from "../models/category.js";
 
 async function getDataCategories() {
     return await selectData();
@@ -17,6 +22,10 @@ async function updateDataCategories(name, id) {
         throw Object.assign(new Error("name wajib diisi."), { status: 400 });
     }
     return await updateData(name, id);
+}
+
+async function deleteDataCategories(id) {
+    return await deleteData(id);
 }
 
 export { getDataCategories, insertDataCategories, updateDataCategories };
