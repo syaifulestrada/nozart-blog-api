@@ -44,9 +44,11 @@ app.post("/posts", async (req, res) => {
 
 app.patch("/posts/:id", async (req, res) => {
     try {
-        const { title, content } = req.body;
-
-        const post = await updateDataPosts(title, content, req.params.id);
+        const post = await updateDataPosts(
+            req.body.title,
+            req.body.content,
+            req.params.id,
+        );
 
         res.status(201).json({
             success: true,
