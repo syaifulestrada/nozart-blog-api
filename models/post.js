@@ -7,8 +7,9 @@ async function selectData() {
         const [rows] = await pool.query(sqlStatement);
 
         return rows;
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error(error);
+        throw error;
     }
 }
 
@@ -25,8 +26,9 @@ async function insertData(title, content) {
         ]);
 
         return rows[0];
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error(error);
+        throw error;
     }
 }
 
@@ -49,4 +51,17 @@ async function updateData(payload, id) {
     }
 }
 
-export { selectData, insertData, updateData };
+async function deleteData(id) {
+    try {
+        const sqlDeleteStatement = `DELETE FROM posts WHERE id = ?`;
+
+        const [result] = await pool.query(sqlDeleteStatement, [id]);
+
+        return result.affectedRows;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+export { selectData, insertData, updateData, deleteData };

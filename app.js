@@ -3,6 +3,7 @@ import {
     getDataPosts,
     insertDataPosts,
     updateDataPosts,
+    deleteDataPosts,
 } from "./controllers/postcontroller.js";
 
 const app = express();
@@ -52,6 +53,25 @@ app.patch("/posts", async (req, res) => {
         res.status(201).json({
             success: true,
             message: "Data successfully updated.",
+            data: post,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+});
+
+app.delete("/posts", async (req, res) => {
+    try {
+        const { id } = req.body;
+
+        const post = await deleteDataPosts(id);
+
+        res.status(201).json({
+            success: true,
+            message: "Data successfully deleted.",
             data: post,
         });
     } catch (error) {

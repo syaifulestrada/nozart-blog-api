@@ -1,11 +1,16 @@
-import { selectData, insertData, updateData } from "../models/post.js";
+import {
+    selectData,
+    insertData,
+    updateData,
+    deleteData,
+} from "../models/post.js";
 
 async function getDataPosts() {
     return await selectData();
 }
 
 async function insertDataPosts(title, content) {
-    return insertData(title, content);
+    return await insertData(title, content);
 }
 
 async function updateDataPosts(title, content, id) {
@@ -13,7 +18,11 @@ async function updateDataPosts(title, content, id) {
         title,
         content,
     };
-    return updateData(payload, id);
+    return await updateData(payload, id);
 }
 
-export { getDataPosts, insertDataPosts, updateDataPosts };
+async function deleteDataPosts(id) {
+    return await deleteData(id);
+}
+
+export { getDataPosts, insertDataPosts, updateDataPosts, deleteDataPosts };
