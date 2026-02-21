@@ -42,4 +42,23 @@ async function updateData(name, id) {
     }
 }
 
-export { selectData, insertData, updateData };
+async function deleteData(id) {
+    try {
+        const sqlDeleteStatement = `DELETE FROM categories WHERE id ?`;
+
+        const [result] = pool.query(sqlDeleteStatement, [id]);
+
+        if (result.affectedRows === 0) {
+            throw (
+                Object.assign(new Error("category tidak ditemukan.")),
+                { status: 404 }
+            );
+        }
+
+        return result.affectedRows;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export { selectData, insertData, updateData, deleteData };
