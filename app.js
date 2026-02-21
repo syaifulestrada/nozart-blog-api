@@ -5,7 +5,10 @@ import {
     updateDataPosts,
     deleteDataPosts,
 } from "./controllers/postcontroller.js";
-import { getDataCategories } from "./controllers/categorycontroller.js";
+import {
+    getDataCategories,
+    insertDataCategories,
+} from "./controllers/categorycontroller.js";
 
 const app = express();
 const port = 3000;
@@ -95,6 +98,20 @@ app.get("/categories", async (req, res, next) => {
         res.status(200).json({
             success: true,
             message: "Data successfully fetched.",
+            data: category,
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+app.post("/categories", async (req, res, next) => {
+    try {
+        const category = await insertDataCategories(req.body.name);
+
+        res.status(201).json({
+            success: true,
+            message: "Data berhasil dibuat.",
             data: category,
         });
     } catch (error) {

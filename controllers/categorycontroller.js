@@ -9,7 +9,7 @@ async function insertDataCategories(name) {
         throw Object.assign(new Error("name wajib diisi."), { status: 400 });
     }
 
-    return await insertData();
+    return await insertData(name);
 }
 
 export { getDataCategories, insertDataCategories };
