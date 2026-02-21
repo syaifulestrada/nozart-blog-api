@@ -63,11 +63,9 @@ app.patch("/posts/:id", async (req, res) => {
     }
 });
 
-app.delete("/posts", async (req, res) => {
+app.delete("/posts/:id", async (req, res) => {
     try {
-        const { id } = req.body;
-
-        const post = await deleteDataPosts(id);
+        const post = await deleteDataPosts(req.params.id);
 
         res.status(201).json({
             success: true,
