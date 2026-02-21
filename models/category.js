@@ -4,10 +4,12 @@ async function selectData() {
     try {
         const sqlSelectStatement = `SELECT * FROM categories`;
 
-        const [rows] = pool.query(sqlSelectStatement);
+        const [rows] = await pool.query(sqlSelectStatement);
 
         return rows;
     } catch (error) {
         throw error;
     }
 }
+
+export { selectData };

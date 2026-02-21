@@ -5,6 +5,7 @@ import {
     updateDataPosts,
     deleteDataPosts,
 } from "./controllers/postcontroller.js";
+import { getDataCategories } from "./controllers/categorycontroller.js";
 
 const app = express();
 const port = 3000;
@@ -81,6 +82,20 @@ app.delete("/posts/:id", async (req, res, next) => {
             success: true,
             message: "Data successfully deleted.",
             data: post,
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+app.get("/categories", async (req, res, next) => {
+    try {
+        const category = await getDataCategories();
+
+        res.status(200).json({
+            success: true,
+            message: "Data successfully fetched.",
+            data: category,
         });
     } catch (error) {
         next(error);
