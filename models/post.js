@@ -57,6 +57,12 @@ async function deleteData(id) {
 
         const [result] = await pool.query(sqlDeleteStatement, [id]);
 
+        if (result.affectedRows === 0) {
+            throw Object.assign(new Error("post tidak ditemukan."), {
+                status: 404,
+            });
+        }
+
         return result.affectedRows;
     } catch (error) {
         console.error(error);
