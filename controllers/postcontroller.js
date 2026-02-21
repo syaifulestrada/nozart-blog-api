@@ -19,6 +19,11 @@ async function insertDataPosts(title, content) {
 }
 
 async function updateDataPosts(title, content, id) {
+    if (!title && !content) {
+        throw Object.assign(new Error("setidaknya salah satu field diisi."), {
+            status: 400,
+        });
+    }
     const payload = {
         title,
         content,
