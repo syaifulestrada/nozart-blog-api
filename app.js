@@ -39,6 +39,14 @@ app.post("/posts", async (req, res, next) => {
     }
 });
 
+app.patch("/posts", (req, res, next) => {
+    next(
+        Object.assign(new Error("post id pada url wajib dii si."), {
+            status: 400,
+        }),
+    );
+});
+
 app.patch("/posts/:id", async (req, res, next) => {
     try {
         const post = await updateDataPosts(
@@ -55,6 +63,14 @@ app.patch("/posts/:id", async (req, res, next) => {
     } catch (error) {
         next(error);
     }
+});
+
+app.delete("/posts", (req, res, next) => {
+    next(
+        Object.assign(new Error("post id pada url wajib diisi."), {
+            status: 400,
+        }),
+    );
 });
 
 app.delete("/posts/:id", async (req, res, next) => {
