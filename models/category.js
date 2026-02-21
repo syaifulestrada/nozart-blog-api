@@ -44,15 +44,14 @@ async function updateData(name, id) {
 
 async function deleteData(id) {
     try {
-        const sqlDeleteStatement = `DELETE FROM categories WHERE id ?`;
+        const sqlDeleteStatement = `DELETE FROM categories WHERE id = ?`;
 
-        const [result] = pool.query(sqlDeleteStatement, [id]);
+        const [result] = await pool.query(sqlDeleteStatement, id);
 
         if (result.affectedRows === 0) {
-            throw (
-                Object.assign(new Error("category tidak ditemukan.")),
-                { status: 404 }
-            );
+            throw Object.assign(new Error("category tidak ditemukan."), {
+                status: 404,
+            });
         }
 
         return result.affectedRows;

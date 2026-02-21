@@ -9,6 +9,7 @@ import {
     getDataCategories,
     insertDataCategories,
     updateDataCategories,
+    deleteDataCategories,
 } from "./controllers/categorycontroller.js";
 
 const app = express();
@@ -138,6 +139,28 @@ app.patch("/categories/:id", async (req, res, next) => {
         res.status(201).json({
             success: true,
             message: "Data berhasil diubah.",
+            data: category,
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+app.delete("/categories", async (req, res, next) => {
+    next(
+        Object.assign(new Error("category id pada url wajib diisi."), {
+            status: 400,
+        }),
+    );
+});
+
+app.delete("/categories/:id", async (req, res, next) => {
+    try {
+        const category = await deleteDataCategories(req.params.id);
+
+        res.status(201).json({
+            success: true,
+            message: "Data berhasil dihapus.",
             data: category,
         });
     } catch (error) {
