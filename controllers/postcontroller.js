@@ -10,6 +10,11 @@ async function getDataPosts() {
 }
 
 async function insertDataPosts(title, content) {
+    if (!title || !content) {
+        throw Object.assign(new Error("title dan content wajib diisi."), {
+            status: 400,
+        });
+    }
     return await insertData(title, content);
 }
 
