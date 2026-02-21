@@ -8,7 +8,6 @@ async function selectData() {
 
         return rows;
     } catch (error) {
-        console.error(error);
         throw error;
     }
 }
@@ -21,7 +20,6 @@ async function insertData(title, content) {
 
         return result.insertId;
     } catch (error) {
-        console.error(error);
         throw error;
     }
 }
@@ -46,7 +44,6 @@ async function updateData(payload, id) {
 
         return result.affectedRows;
     } catch (error) {
-        console.error(error);
         throw error;
     }
 }
@@ -65,7 +62,6 @@ async function deleteData(id) {
 
         return result.affectedRows;
     } catch (error) {
-        console.error(error);
         throw error;
     }
 }
