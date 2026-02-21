@@ -8,6 +8,7 @@ import {
 import {
     getDataCategories,
     insertDataCategories,
+    updateDataCategories,
 } from "./controllers/categorycontroller.js";
 
 const app = express();
@@ -24,7 +25,7 @@ app.get("/posts", async (req, res) => {
 
     res.status(200).json({
         success: true,
-        message: "Data successfully fetched.",
+        message: "Data berhasil ditampilkan.",
         data: posts,
     });
 });
@@ -35,7 +36,7 @@ app.post("/posts", async (req, res, next) => {
 
         res.status(201).json({
             success: true,
-            message: "Data successfully created.",
+            message: "Data berhasil dibuat.",
             data: post,
         });
     } catch (error) {
@@ -45,7 +46,7 @@ app.post("/posts", async (req, res, next) => {
 
 app.patch("/posts", (req, res, next) => {
     next(
-        Object.assign(new Error("post id pada url wajib dii si."), {
+        Object.assign(new Error("post id pada url wajib diisi."), {
             status: 400,
         }),
     );
@@ -61,7 +62,7 @@ app.patch("/posts/:id", async (req, res, next) => {
 
         res.status(201).json({
             success: true,
-            message: "Data successfully updated.",
+            message: "Data berhasil diubah.",
             data: post,
         });
     } catch (error) {
@@ -83,7 +84,7 @@ app.delete("/posts/:id", async (req, res, next) => {
 
         res.status(201).json({
             success: true,
-            message: "Data successfully deleted.",
+            message: "Data berhasil dihapus.",
             data: post,
         });
     } catch (error) {
@@ -97,7 +98,7 @@ app.get("/categories", async (req, res, next) => {
 
         res.status(200).json({
             success: true,
-            message: "Data successfully fetched.",
+            message: "Data berhasil ditampilkan.",
             data: category,
         });
     } catch (error) {
@@ -112,6 +113,31 @@ app.post("/categories", async (req, res, next) => {
         res.status(201).json({
             success: true,
             message: "Data berhasil dibuat.",
+            data: category,
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+app.patch("/categories", (req, res, next) => {
+    next(
+        Object.assign(new Error("category id pada url wajib diisi."), {
+            status: 400,
+        }),
+    );
+});
+
+app.patch("/categories/:id", async (req, res, next) => {
+    try {
+        const category = await updateDataCategories(
+            req.body.name,
+            req.params.id,
+        );
+
+        res.status(201).json({
+            success: true,
+            message: "Data berhasil diubah.",
             data: category,
         });
     } catch (error) {

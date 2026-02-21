@@ -26,7 +26,7 @@ async function insertData(name) {
 
 async function updateData(name, id) {
     try {
-        const sqlUpdateStatement = `UDPATE categories SET name = ? WHERE id = ?`;
+        const sqlUpdateStatement = `UPDATE categories SET name = ? WHERE id = ?`;
 
         const [result] = await pool.query(sqlUpdateStatement, [name, id]);
 

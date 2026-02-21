@@ -13,6 +13,9 @@ async function insertDataCategories(name) {
 }
 
 async function updateDataCategories(name, id) {
+    if (!name) {
+        throw Object.assign(new Error("name wajib diisi."), { status: 400 });
+    }
     return await updateData(name, id);
 }
 
