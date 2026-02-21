@@ -27,9 +27,7 @@ app.get("/posts", async (req, res) => {
 
 app.post("/posts", async (req, res) => {
     try {
-        const { title, content } = req.body;
-
-        const post = await insertDataPosts(title, content);
+        const post = await insertDataPosts(req.body.title, req.body.content);
 
         res.status(201).json({
             success: true,
