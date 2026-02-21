@@ -28,4 +28,9 @@ async function deleteDataCategories(id) {
     return await deleteData(id);
 }
 
-export { getDataCategories, insertDataCategories, updateDataCategories };
+export {
+    getDataCategories,
+    insertDataCategories,
+    updateDataCategories,
+    deleteDataCategories,
+};
