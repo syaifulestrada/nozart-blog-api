@@ -19,13 +19,7 @@ async function insertData(title, content) {
 
         const [result] = await pool.query(sqlStatementInsert, [title, content]);
 
-        const sqlStatementSelectById = `SELECT * FROM posts WHERE id = ?`;
-
-        const [rows] = await pool.query(sqlStatementSelectById, [
-            result.insertId,
-        ]);
-
-        return rows[0];
+        return result.insertId;
     } catch (error) {
         console.error(error);
         throw error;
