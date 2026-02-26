@@ -18,6 +18,16 @@ const port = 3000;
 
 app.use(json());
 
+app.use((req, res, next) => {
+    const apiKey = req.headers["x-api-key"];
+
+    if (!apiKey || apiKey !== process.env.API_KEY) {
+        return next(Object.assign(new Error("Unauthorized."), { status: 401 }));
+    }
+
+    next();
+});
+
 app.get("/", (req, res) => {
     res.json("Hello World!");
 });
