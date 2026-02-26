@@ -78,4 +78,4 @@ async function deleteData(id) {
     }
 }
 
-export { selectData, insertData, updateData, deleteData };
+export { selectData, insertData, updateData, deleteData, detailData };
