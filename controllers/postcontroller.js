@@ -10,7 +10,7 @@ async function getDataPosts() {
     return await selectData();
 }
 
-async function getDtailData(postId) {
+async function getDetailData(postId) {
     return await detailData(postId);
 }
 
@@ -45,5 +45,5 @@ export {
     insertDataPosts,
     updateDataPosts,
     deleteDataPosts,
-    getDtailData,
+    getDetailData,
 };
