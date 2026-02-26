@@ -3,10 +3,15 @@ import {
     insertData,
     updateData,
     deleteData,
+    detailData,
 } from "../models/post.js";
 
 async function getDataPosts() {
     return await selectData();
+}
+
+async function getDtailData(postId) {
+    return await detailData(postId);
 }
 
 async function insertDataPosts(title, content) {
@@ -35,4 +40,10 @@ async function deleteDataPosts(id) {
     return await deleteData(id);
 }
 
-export { getDataPosts, insertDataPosts, updateDataPosts, deleteDataPosts };
+export {
+    getDataPosts,
+    insertDataPosts,
+    updateDataPosts,
+    deleteDataPosts,
+    getDtailData,
+};
