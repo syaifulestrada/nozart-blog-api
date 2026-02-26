@@ -1,6 +1,7 @@
 import express, { json } from "express";
 import {
     getDataPosts,
+    getDetailData,
     insertDataPosts,
     updateDataPosts,
     deleteDataPosts,
@@ -29,6 +30,20 @@ app.get("/posts", async (req, res) => {
         message: "Data berhasil ditampilkan.",
         data: posts,
     });
+});
+
+app.get("/posts/:id", async (req, res, next) => {
+    try {
+        const post = await getDetailData(req.params.id);
+
+        res.status(200).json({
+            success: true,
+            message: "Berhasil menampilkan detail data post.",
+            data: post,
+        });
+    } catch (error) {
+        next(error);
+    }
 });
 
 app.post("/posts", async (req, res, next) => {
