@@ -33,11 +33,7 @@ async function updateDataPosts(title, content, id) {
             status: 400,
         });
     }
-    const payload = {
-        title,
-        content,
-    };
-    return await updateData(payload, id);
+    return await updateData(title, content, id);
 }
 
 async function deleteDataPosts(id) {
