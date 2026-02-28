@@ -51,15 +51,15 @@ async function insertData(title, content, categoryIds) {
     }
 }
 
-async function updateData(payload, postId) {
+async function updateData(title, content, postId) {
     try {
         const sqlUpdateStatement = `UPDATE posts 
             SET title = COALESCE(?, title), content = COALESCE(?, content)
             WHERE id = ?`;
 
         const [result] = await pool.query(sqlUpdateStatement, [
-            payload.title || null,
-            payload.content || null,
+            title || null,
+            content || null,
             postId,
         ]);
 
