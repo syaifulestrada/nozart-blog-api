@@ -51,15 +51,19 @@ async function insertData(title, content, categoryIds) {
     }
 }
 
-async function updateData(title, content, postId) {
+async function updateData(title, content, postId, categoryIds) {
+    const connection = await pool.getConnection();
+
     try {
+        await connection.beginTransaction();
+
         const sqlUpdateStatement = `UPDATE posts 
             SET title = COALESCE(?, title), content = COALESCE(?, content)
             WHERE id = ?`;
 
-        const [result] = await pool.query(sqlUpdateStatement, [
-            title || null,
-            content || null,
+        const [result] = await connection.query(sqlUpdateStatement, [
+            title ?? null,
+            content ?? null,
             postId,
         ]);
 
@@ -69,9 +73,33 @@ async function updateData(title, content, postId) {
             });
         }
 
+        if (categoryIds !== undefined) {
+            await connection.query(
+                "DELETE FROM post_categories WHERE post_id = ?",
+                [postId],
+            );
+
+            const ids = Array.isArray(categoryIds)
+                ? categoryIds
+                : [categoryIds];
+
+            if (ids.length > 0) {
+                const values = ids.map((categoryId) => [postId, categoryId]);
+
+                await connection.query(
+                    "INSERT INTO post_categories (post_id, category_id) VALUES ?",
+                    [values],
+                );
+            }
+        }
+
+        await connection.commit();
         return result.affectedRows;
     } catch (error) {
+        await connection.rollback();
         throw error;
+    } finally {
+        connection.release();
     }
 }
 
