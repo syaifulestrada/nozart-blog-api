@@ -23,7 +23,8 @@ async function insertDataPosts(title, content, categoryIds) {
             },
         );
     }
-    return await insertData(title, content, categoryIds);
+    const ids = Array.isArray(categoryIds) ? categoryIds : [categoryIds];
+    return await insertData(title, content, ids);
 }
 
 async function updateDataPosts(title, content, id) {
