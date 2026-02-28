@@ -30,11 +30,20 @@ async function detailData(postId) {
     }
 }
 
-async function insertData(title, content) {
+async function insertData(title, content, categoryIds) {
     try {
         const sqlStatementInsert = `INSERT INTO posts (title, content) VALUE (?, ?)`;
 
         const [result] = await pool.query(sqlStatementInsert, [title, content]);
+
+        const insertPostCategories = `INSERT INTO post_categories (post_id, category_id) VALUES ?`;
+
+        const values = categoryIds.map((categoryId) => [
+            result.insertId,
+            categoryId,
+        ]);
+
+        await pool.query(insertPostCategories, [values]);
 
         return result.insertId;
     } catch (error) {
