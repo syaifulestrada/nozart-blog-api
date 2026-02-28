@@ -15,7 +15,11 @@ async function getDetailData(postId) {
 }
 
 async function insertDataPosts(title, content, categoryIds) {
-    if (!title || !content || !categoryIds) {
+    if (
+        title === undefined ||
+        content === undefined ||
+        categoryIds === undefined
+    ) {
         throw Object.assign(
             new Error("title, content dan categoryIds wajib diisi."),
             {
@@ -23,8 +27,7 @@ async function insertDataPosts(title, content, categoryIds) {
             },
         );
     }
-    const ids = Array.isArray(categoryIds) ? categoryIds : [categoryIds];
-    return await insertData(title, content, ids);
+    return await insertData(title, content, categoryIds);
 }
 
 async function updateDataPosts(title, content, postId, categoryIds) {
