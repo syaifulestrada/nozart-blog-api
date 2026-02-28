@@ -31,23 +31,36 @@ async function detailData(postId) {
 }
 
 async function insertData(title, content, categoryIds) {
+    const connection = await pool.getConnection();
+
     try {
+        await connection.beginTransaction();
+
         const sqlStatementInsert = `INSERT INTO posts (title, content) VALUE (?, ?)`;
 
-        const [result] = await pool.query(sqlStatementInsert, [title, content]);
-
-        const insertPostCategories = `INSERT INTO post_categories (post_id, category_id) VALUES ?`;
-
-        const values = categoryIds.map((categoryId) => [
-            result.insertId,
-            categoryId,
+        const [result] = await connection.query(sqlStatementInsert, [
+            title,
+            content,
         ]);
 
-        await pool.query(insertPostCategories, [values]);
+        const ids = Array.isArray(categoryIds) ? categoryIds : [categoryIds];
+        const postId = result.insertId;
 
+        if (ids > 0) {
+            const values = ids.map((categoryId) => [postId, categoryId]);
+
+            const insertPostCategoriesQuery = `INSERT INTO post_categories (post_id, category_id) VALUES ?`;
+
+            await connection.query(insertPostCategoriesQuery, [values]);
+        }
+
+        await connection.commit();
         return result.insertId;
     } catch (error) {
+        await connection.rollback();
         throw error;
+    } finally {
+        connection.release();
     }
 }
 
