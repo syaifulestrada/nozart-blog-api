@@ -88,7 +88,7 @@ app.patch("/posts/:id", async (req, res, next) => {
             req.body.title,
             req.body.content,
             req.params.id,
-            req.params.categoryIds,
+            req.body.categoryIds,
         );
 
         res.status(201).json({
