@@ -14,13 +14,16 @@ async function getDetailData(postId) {
     return await detailData(postId);
 }
 
-async function insertDataPosts(title, content) {
-    if (!title || !content) {
-        throw Object.assign(new Error("title dan content wajib diisi."), {
-            status: 400,
-        });
+async function insertDataPosts(title, content, categoryIds) {
+    if (!title || !content || !categoryIds) {
+        throw Object.assign(
+            new Error("title, content dan categoryIds wajib diisi."),
+            {
+                status: 400,
+            },
+        );
     }
-    return await insertData(title, content);
+    return await insertData(title, content, categoryIds);
 }
 
 async function updateDataPosts(title, content, id) {
