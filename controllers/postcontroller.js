@@ -27,13 +27,17 @@ async function insertDataPosts(title, content, categoryIds) {
     return await insertData(title, content, ids);
 }
 
-async function updateDataPosts(title, content, id) {
-    if (!title && !content) {
+async function updateDataPosts(title, content, postId, categoryIds) {
+    if (
+        title === undefined &&
+        content === undefined &&
+        categoryIds === undefined
+    ) {
         throw Object.assign(new Error("setidaknya salah satu field diisi."), {
             status: 400,
         });
     }
-    return await updateData(title, content, id);
+    return await updateData(title, content, postId, categoryIds);
 }
 
 async function deleteDataPosts(id) {
