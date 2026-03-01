@@ -60,7 +60,8 @@ app.get("/posts/:id", async (req, res, next) => {
 app.post("/posts", async (req, res, next) => {
     try {
         const { title, content, categoryIds } = req.body;
-        const post = await insertDataPosts(title, content, categoryIds);
+        const { cover } = req.file;
+        const post = await insertDataPosts(title, content, cover, categoryIds);
 
         res.status(201).json({
             success: true,
