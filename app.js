@@ -94,11 +94,18 @@ app.patch("/posts", (req, res, next) => {
     );
 });
 
-app.patch("/posts/:id", async (req, res, next) => {
+app.patch("/posts/:id", upload.single("cover"), async (req, res, next) => {
     try {
         const postId = req.params.id;
         const { title, content, categoryIds } = req.body;
-        const post = await updateDataPosts(title, content, postId, categoryIds);
+        const cover = req.file;
+        const post = await updateDataPosts(
+            title,
+            content,
+            cover,
+            postId,
+            categoryIds,
+        );
 
         res.status(201).json({
             success: true,
