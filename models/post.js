@@ -137,6 +137,21 @@ async function updateData(title, content, cover, postId, categoryIds) {
 
 async function deleteData(id) {
     try {
+        const [oldPostCover] = await pool.query(
+            "SELECT cover FROM posts WHERE id = ?",
+            [id],
+        );
+
+        if (oldPostCover.length === 0) {
+            throw Object.assign(new Error("post tidak ditemukan."), {
+                status: 404,
+            });
+        }
+
+        if (oldPostCover[0].cover && oldPostCover.length > 0) {
+            await unlink(oldPostCover[0].cover);
+        }
+
         const sqlDeleteStatement = `DELETE FROM posts WHERE id = ?`;
 
         const [result] = await pool.query(sqlDeleteStatement, [id]);
