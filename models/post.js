@@ -30,23 +30,24 @@ async function detailData(postId) {
     }
 }
 
-async function insertData(title, content, categoryIds) {
+async function insertData(title, content, cover, categoryIds) {
     const connection = await pool.getConnection();
 
     try {
         await connection.beginTransaction();
 
-        const sqlStatementInsert = `INSERT INTO posts (title, content) VALUE (?, ?)`;
+        const sqlStatementInsert = `INSERT INTO posts (title, content) VALUE (?, ?, ?)`;
 
         const [result] = await connection.query(sqlStatementInsert, [
             title,
             content,
+            cover?.path ?? null,
         ]);
 
         const ids = Array.isArray(categoryIds) ? categoryIds : [categoryIds];
         const postId = result.insertId;
 
-        if (ids > 0) {
+        if (ids.length > 0) {
             const values = ids.map((categoryId) => [postId, categoryId]);
 
             const insertPostCategoriesQuery = `INSERT INTO post_categories (post_id, category_id) VALUES ?`;
