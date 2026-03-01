@@ -107,7 +107,7 @@ app.patch("/posts/:id", upload.single("cover"), async (req, res, next) => {
             categoryIds,
         );
 
-        res.status(201).json({
+        res.status(200).json({
             success: true,
             message: "Data berhasil diubah.",
             data: post,
@@ -129,7 +129,7 @@ app.delete("/posts/:id", async (req, res, next) => {
     try {
         const post = await deleteDataPosts(req.params.id);
 
-        res.status(201).json({
+        res.status(200).json({
             success: true,
             message: "Data berhasil dihapus.",
             data: post,
@@ -204,7 +204,7 @@ app.delete("/categories/:id", async (req, res, next) => {
     try {
         const category = await deleteDataCategories(req.params.id);
 
-        res.status(204).json({
+        res.status(200).json({
             success: true,
             message: "Data berhasil dihapus.",
             data: category,
