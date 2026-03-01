@@ -81,12 +81,9 @@ app.patch("/posts", (req, res, next) => {
 
 app.patch("/posts/:id", async (req, res, next) => {
     try {
-        const post = await updateDataPosts(
-            req.body.title,
-            req.body.content,
-            req.params.id,
-            req.body.categoryIds,
-        );
+        const postId = req.params.id;
+        const { title, content, categoryIds } = req.body;
+        const post = await updateDataPosts(title, content, postId, categoryIds);
 
         res.status(201).json({
             success: true,
