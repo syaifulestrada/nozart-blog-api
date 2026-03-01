@@ -14,7 +14,7 @@ async function getDetailData(postId) {
     return await detailData(postId);
 }
 
-async function insertDataPosts(title, content, categoryIds) {
+async function insertDataPosts(title, content, cover, categoryIds) {
     if (
         title === undefined ||
         content === undefined ||
@@ -27,7 +27,7 @@ async function insertDataPosts(title, content, categoryIds) {
             },
         );
     }
-    return await insertData(title, content, categoryIds);
+    return await insertData(title, content, cover, categoryIds);
 }
 
 async function updateDataPosts(title, content, postId, categoryIds) {
