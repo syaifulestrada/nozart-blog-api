@@ -182,7 +182,7 @@ app.delete("/categories/:id", async (req, res, next) => {
     try {
         const category = await deleteDataCategories(req.params.id);
 
-        res.status(201).json({
+        res.status(204).json({
             success: true,
             message: "Data berhasil dihapus.",
             data: category,
