@@ -1,4 +1,5 @@
 import express, { json } from "express";
+import multer from "multer";
 import {
     getDataPosts,
     getDetailData,
@@ -15,6 +16,7 @@ import {
 
 const app = express();
 const port = 3000;
+const upload = multer({ dest: "storage/post/img" });
 
 app.use(json());
 app.use(express.static("storage"));
@@ -57,10 +59,10 @@ app.get("/posts/:id", async (req, res, next) => {
     }
 });
 
-app.post("/posts", async (req, res, next) => {
+app.post("/posts", upload.single("cover"), async (req, res, next) => {
     try {
         const { title, content, categoryIds } = req.body;
-        const { cover } = req.file;
+        const cover = req.file;
         const post = await insertDataPosts(title, content, cover, categoryIds);
 
         res.status(201).json({
