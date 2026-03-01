@@ -17,6 +17,7 @@ const app = express();
 const port = 3000;
 
 app.use(json());
+app.use(express.static("storage"));
 
 app.use((req, res, next) => {
     const apiKey = req.headers["x-api-key"];
