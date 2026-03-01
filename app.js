@@ -58,11 +58,8 @@ app.get("/posts/:id", async (req, res, next) => {
 
 app.post("/posts", async (req, res, next) => {
     try {
-        const post = await insertDataPosts(
-            req.body.title,
-            req.body.content,
-            req.body.categoryIds,
-        );
+        const { title, content, categoryIds } = req.body;
+        const post = await insertDataPosts(title, content, categoryIds);
 
         res.status(201).json({
             success: true,
