@@ -160,7 +160,7 @@ app.patch("/categories/:id", async (req, res, next) => {
             req.params.id,
         );
 
-        res.status(201).json({
+        res.status(200).json({
             success: true,
             message: "Data berhasil diubah.",
             data: category,
