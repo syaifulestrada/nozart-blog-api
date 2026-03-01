@@ -36,7 +36,7 @@ async function insertData(title, content, cover, categoryIds) {
     try {
         await connection.beginTransaction();
 
-        const sqlStatementInsert = `INSERT INTO posts (title, content) VALUE (?, ?, ?)`;
+        const sqlStatementInsert = `INSERT INTO posts (title, content, cover) VALUE (?, ?, ?)`;
 
         const [result] = await connection.query(sqlStatementInsert, [
             title,
