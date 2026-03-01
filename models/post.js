@@ -137,19 +137,25 @@ async function updateData(title, content, cover, postId, categoryIds) {
 
 async function deleteData(id) {
     try {
-        const [oldPostCover] = await pool.query(
+        const [rows] = await pool.query(
             "SELECT cover FROM posts WHERE id = ?",
             [id],
         );
 
-        if (oldPostCover.length === 0) {
+        if (rows.length === 0) {
             throw Object.assign(new Error("post tidak ditemukan."), {
                 status: 404,
             });
         }
 
-        if (oldPostCover[0].cover && oldPostCover.length > 0) {
-            await unlink(oldPostCover[0].cover);
+        const coverPath = rows[0].cover;
+
+        if (coverPath) {
+            try {
+                await unlink(coverPath);
+            } catch (error) {
+                console.error("Gagal hapus file:", error.message);
+            }
         }
 
         const sqlDeleteStatement = `DELETE FROM posts WHERE id = ?`;
