@@ -1,5 +1,6 @@
 import express, { json } from "express";
 import multer from "multer";
+import path from "path";
 import {
     getDataPosts,
     getDetailData,
@@ -16,7 +17,17 @@ import {
 
 const app = express();
 const port = 3000;
-const upload = multer({ dest: "storage/post/img" });
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "storage/post/img");
+    },
+    filename: (req, file, cb) => {
+        const uniqueName = Date.now() + path.extname(file.originalname);
+        cb(null, uniqueName);
+    },
+});
+
+const upload = multer({ storage });
 
 app.use(json());
 app.use(express.static("storage"));
