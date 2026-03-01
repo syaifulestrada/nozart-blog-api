@@ -1,3 +1,4 @@
+import { unlink } from "fs/promises";
 import pool from "../utils/db.js";
 
 async function selectData() {
@@ -72,19 +73,29 @@ async function insertData(title, content, cover, categoryIds) {
     }
 }
 
-async function updateData(title, content, postId, categoryIds) {
+async function updateData(title, content, cover, postId, categoryIds) {
     const connection = await pool.getConnection();
 
     try {
         await connection.beginTransaction();
 
+        const [oldPostCover] = await connection.query(
+            "SELECT cover FROM posts WHERE id = ?",
+            [postId],
+        );
+
+        if (cover && oldPostCover[0].cover) {
+            await unlink(oldPostCover[0].cover);
+        }
+
         const sqlUpdateStatement = `UPDATE posts 
-            SET title = COALESCE(?, title), content = COALESCE(?, content)
+            SET title = COALESCE(?, title), content = COALESCE(?, content), cover = COALESCE(?, cover)
             WHERE id = ?`;
 
         const [result] = await connection.query(sqlUpdateStatement, [
             title ?? null,
             content ?? null,
+            cover?.path ?? null,
             postId,
         ]);
 
