@@ -1,56 +1,23 @@
-import {
-    selectData,
-    insertData,
-    updateData,
-    deleteData,
-    detailData,
-} from "../models/post.model.js";
+import PostService from "../services/post.service.js";
 
-async function getDataPosts() {
-    return await selectData();
+function index() {
+    return PostService.index();
 }
 
-async function getDetailData(postId) {
-    return await detailData(postId);
+function show(postId) {
+    return PostService.show(postId);
 }
 
-async function insertDataPosts(title, content, cover, categoryIds) {
-    if (
-        title === undefined ||
-        content === undefined ||
-        categoryIds === undefined
-    ) {
-        throw Object.assign(
-            new Error("title, content dan categoryIds wajib diisi."),
-            {
-                status: 400,
-            },
-        );
-    }
-    return await insertData(title, content, cover, categoryIds);
+function store(payload) {
+    return PostService.store(payload);
 }
 
-async function updateDataPosts(title, content, cover, postId, categoryIds) {
-    if (
-        title === undefined &&
-        content === undefined &&
-        categoryIds === undefined
-    ) {
-        throw Object.assign(new Error("setidaknya salah satu field diisi."), {
-            status: 400,
-        });
-    }
-    return await updateData(title, content, cover, postId, categoryIds);
+function update(payload) {
+    return PostService.update(payload);
 }
 
-async function deleteDataPosts(id) {
-    return await deleteData(id);
+function destroy(postId) {
+    return PostService.destroy(postId);
 }
 
-export {
-    getDataPosts,
-    insertDataPosts,
-    updateDataPosts,
-    deleteDataPosts,
-    getDetailData,
-};
+export { index, show, store, update, destroy };

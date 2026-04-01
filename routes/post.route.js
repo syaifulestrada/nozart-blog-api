@@ -3,11 +3,11 @@ import multer from "multer";
 import fs from "fs/promises";
 import path from "path";
 import {
-    getDataPosts,
-    getDetailData,
-    insertDataPosts,
-    updateDataPosts,
-    deleteDataPosts,
+    index,
+    show,
+    store,
+    update,
+    destroy,
 } from "../controllers/post.controller.js";
 
 const storage = multer.diskStorage({
@@ -30,7 +30,7 @@ const router = express.Router();
 const upload = multer({ storage });
 
 router.get("/", async (req, res) => {
-    const posts = await getDataPosts();
+    const posts = await index();
 
     res.status(200).json({
         success: true,
@@ -44,7 +44,7 @@ router.get("/", async (req, res) => {
 
 router.get("/show/:id", async (req, res, next) => {
     try {
-        const post = await getDetailData(req.params.id);
+        const post = await show(req.params.id);
 
         res.status(200).json({
             success: true,
@@ -58,9 +58,7 @@ router.get("/show/:id", async (req, res, next) => {
 
 router.post("/", upload.single("cover"), async (req, res, next) => {
     try {
-        const { title, content, categoryIds } = req.body;
-        const cover = req.file;
-        const post = await insertDataPosts(title, content, cover, categoryIds);
+        const post = await store({ ...req.body, cover: req.file });
 
         res.status(201).json({
             success: true,
@@ -82,16 +80,11 @@ router.patch("/", (req, res, next) => {
 
 router.patch("/:id", upload.single("cover"), async (req, res, next) => {
     try {
-        const postId = req.params.id;
-        const { title, content, categoryIds } = req.body;
-        const cover = req.file;
-        const post = await updateDataPosts(
-            title,
-            content,
-            cover,
-            postId,
-            categoryIds,
-        );
+        const post = await update({
+            ...req.body,
+            postId: req.params.id,
+            cover: req.file,
+        });
 
         res.status(200).json({
             success: true,
@@ -113,7 +106,7 @@ router.delete("/", (req, res, next) => {
 
 router.delete("/:id", async (req, res, next) => {
     try {
-        const post = await deleteDataPosts(req.params.id);
+        const post = await destroy(req.params.id);
 
         res.status(200).json({
             success: true,
