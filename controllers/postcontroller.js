@@ -14,7 +14,7 @@ async function getDetailData(postId) {
     return await detailData(postId);
 }
 
-async function insertDataPosts(title, content, categoryIds) {
+async function insertDataPosts(title, content, cover, categoryIds) {
     if (
         title === undefined ||
         content === undefined ||
@@ -27,10 +27,10 @@ async function insertDataPosts(title, content, categoryIds) {
             },
         );
     }
-    return await insertData(title, content, categoryIds);
+    return await insertData(title, content, cover, categoryIds);
 }
 
-async function updateDataPosts(title, content, postId, categoryIds) {
+async function updateDataPosts(title, content, cover, postId, categoryIds) {
     if (
         title === undefined &&
         content === undefined &&
@@ -40,7 +40,7 @@ async function updateDataPosts(title, content, postId, categoryIds) {
             status: 400,
         });
     }
-    return await updateData(title, content, postId, categoryIds);
+    return await updateData(title, content, cover, postId, categoryIds);
 }
 
 async function deleteDataPosts(id) {

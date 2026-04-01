@@ -1,4 +1,6 @@
 import express, { json } from "express";
+import multer from "multer";
+import path from "path";
 import {
     getDataPosts,
     getDetailData,
@@ -10,8 +12,20 @@ import categoryRoute from "./routes/category.js";
 
 const app = express();
 const port = 3000;
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "storage/post/img");
+    },
+    filename: (req, file, cb) => {
+        const uniqueName = Date.now() + path.extname(file.originalname);
+        cb(null, uniqueName);
+    },
+});
+
+const upload = multer({ storage });
 
 app.use(json());
+app.use(express.static("storage"));
 
 app.use((req, res, next) => {
     const apiKey = req.headers["x-api-key"];
@@ -51,10 +65,11 @@ app.get("/posts/:id", async (req, res, next) => {
     }
 });
 
-app.post("/posts", async (req, res, next) => {
+app.post("/posts", upload.single("cover"), async (req, res, next) => {
     try {
         const { title, content, categoryIds } = req.body;
-        const post = await insertDataPosts(title, content, categoryIds);
+        const cover = req.file;
+        const post = await insertDataPosts(title, content, cover, categoryIds);
 
         res.status(201).json({
             success: true,
@@ -74,13 +89,20 @@ app.patch("/posts", (req, res, next) => {
     );
 });
 
-app.patch("/posts/:id", async (req, res, next) => {
+app.patch("/posts/:id", upload.single("cover"), async (req, res, next) => {
     try {
         const postId = req.params.id;
         const { title, content, categoryIds } = req.body;
-        const post = await updateDataPosts(title, content, postId, categoryIds);
+        const cover = req.file;
+        const post = await updateDataPosts(
+            title,
+            content,
+            cover,
+            postId,
+            categoryIds,
+        );
 
-        res.status(201).json({
+        res.status(200).json({
             success: true,
             message: "Data berhasil diubah.",
             data: post,
@@ -102,7 +124,7 @@ app.delete("/posts/:id", async (req, res, next) => {
     try {
         const post = await deleteDataPosts(req.params.id);
 
-        res.status(201).json({
+        res.status(200).json({
             success: true,
             message: "Data berhasil dihapus.",
             data: post,
@@ -112,7 +134,84 @@ app.delete("/posts/:id", async (req, res, next) => {
     }
 });
 
+<<<<<<< HEAD
 app.use("/api/categories", categoryRoute);
+=======
+app.get("/categories", async (req, res, next) => {
+    try {
+        const category = await getDataCategories();
+
+        res.status(200).json({
+            success: true,
+            message: "Data berhasil ditampilkan.",
+            data: category,
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+app.post("/categories", async (req, res, next) => {
+    try {
+        const category = await insertDataCategories(req.body.name);
+
+        res.status(201).json({
+            success: true,
+            message: "Data berhasil dibuat.",
+            data: category,
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+app.patch("/categories", (req, res, next) => {
+    next(
+        Object.assign(new Error("category id pada url wajib diisi."), {
+            status: 400,
+        }),
+    );
+});
+
+app.patch("/categories/:id", async (req, res, next) => {
+    try {
+        const category = await updateDataCategories(
+            req.body.name,
+            req.params.id,
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Data berhasil diubah.",
+            data: category,
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+app.delete("/categories", async (req, res, next) => {
+    next(
+        Object.assign(new Error("category id pada url wajib diisi."), {
+            status: 400,
+        }),
+    );
+});
+
+app.delete("/categories/:id", async (req, res, next) => {
+    try {
+        const category = await deleteDataCategories(req.params.id);
+
+        res.status(200).json({
+            success: true,
+            message: "Data berhasil dihapus.",
+            data: category,
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+>>>>>>> a66067fd769364e5ce60a70eabd225da104b6705
 
 app.use((error, req, res, next) => {
     res.status(error.status || 500).json({
