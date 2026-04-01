@@ -6,12 +6,7 @@ import {
     updateDataPosts,
     deleteDataPosts,
 } from "./controllers/postcontroller.js";
-import {
-    getDataCategories,
-    insertDataCategories,
-    updateDataCategories,
-    deleteDataCategories,
-} from "./controllers/categorycontroller.js";
+import categoryRoute from "./routes/category.js";
 
 const app = express();
 const port = 3000;
@@ -117,80 +112,7 @@ app.delete("/posts/:id", async (req, res, next) => {
     }
 });
 
-app.get("/categories", async (req, res, next) => {
-    try {
-        const category = await getDataCategories();
-
-        res.status(200).json({
-            success: true,
-            message: "Data berhasil ditampilkan.",
-            data: category,
-        });
-    } catch (error) {
-        next(error);
-    }
-});
-
-app.post("/categories", async (req, res, next) => {
-    try {
-        const category = await insertDataCategories(req.body.name);
-
-        res.status(201).json({
-            success: true,
-            message: "Data berhasil dibuat.",
-            data: category,
-        });
-    } catch (error) {
-        next(error);
-    }
-});
-
-app.patch("/categories", (req, res, next) => {
-    next(
-        Object.assign(new Error("category id pada url wajib diisi."), {
-            status: 400,
-        }),
-    );
-});
-
-app.patch("/categories/:id", async (req, res, next) => {
-    try {
-        const category = await updateDataCategories(
-            req.body.name,
-            req.params.id,
-        );
-
-        res.status(201).json({
-            success: true,
-            message: "Data berhasil diubah.",
-            data: category,
-        });
-    } catch (error) {
-        next(error);
-    }
-});
-
-app.delete("/categories", async (req, res, next) => {
-    next(
-        Object.assign(new Error("category id pada url wajib diisi."), {
-            status: 400,
-        }),
-    );
-});
-
-app.delete("/categories/:id", async (req, res, next) => {
-    try {
-        const category = await deleteDataCategories(req.params.id);
-
-        res.status(201).json({
-            success: true,
-            message: "Data berhasil dihapus.",
-            data: category,
-        });
-    } catch (error) {
-        next(error);
-    }
-});
+app.use("/api/categories", categoryRoute);
 
 app.use((error, req, res, next) => {
     res.status(error.status || 500).json({
