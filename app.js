@@ -1,6 +1,6 @@
 import express, { json } from "express";
 import postRoute from "./routes/post.route.js";
-import categoryRoute from "./routes/category.js";
+import categoryRoute from "./routes/category.route.js";
 
 const app = express();
 const port = 3000;
