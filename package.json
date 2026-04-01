@@ -1,18 +1,19 @@
 {
-  "name": "nozart-blog-api",
-  "version": "1.0.0",
-  "description": "",
-  "license": "ISC",
-  "author": "syaiful estrada",
-  "type": "module",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "dotenv": "^17.3.1",
-    "express": "^5.2.1",
-    "multer": "^2.0.2",
-    "mysql2": "^3.17.3"
-  }
+    "name": "nozart-blog-api",
+    "version": "1.0.0",
+    "description": "",
+    "license": "ISC",
+    "author": "syaiful estrada",
+    "type": "module",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "nodemon app"
+    },
+    "dependencies": {
+        "dotenv": "^17.3.1",
+        "express": "^5.2.1",
+        "multer": "^2.0.2",
+        "mysql2": "^3.17.3"
+    }
 }
