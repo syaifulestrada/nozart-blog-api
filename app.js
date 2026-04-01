@@ -1,4 +1,5 @@
 import express, { json } from "express";
+import fs from "fs/promises";
 import multer from "multer";
 import path from "path";
 import {
@@ -13,8 +14,14 @@ import categoryRoute from "./routes/category.js";
 const app = express();
 const port = 3000;
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "storage/post/img");
+    destination: async (req, file, cb) => {
+        const dir = "storage/post/img";
+        try {
+            await fs.mkdir(dir, { recursive: true });
+            cb(null, dir);
+        } catch (error) {
+            cb(error);
+        }
     },
     filename: (req, file, cb) => {
         const uniqueName = Date.now() + path.extname(file.originalname);
