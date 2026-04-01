@@ -3,7 +3,7 @@ import {
     insertData,
     updateData,
     deleteData,
-} from "../models/category.js";
+} from "../models/category.model.js";
 
 async function getDataCategories() {
     return await selectData();
