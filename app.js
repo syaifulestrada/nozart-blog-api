@@ -1,35 +1,9 @@
 import express, { json } from "express";
-import fs from "fs/promises";
-import multer from "multer";
-import path from "path";
-import {
-    getDataPosts,
-    getDetailData,
-    insertDataPosts,
-    updateDataPosts,
-    deleteDataPosts,
-} from "./controllers/postcontroller.js";
+import postRoute from "./routes/post.route.js";
 import categoryRoute from "./routes/category.js";
 
 const app = express();
 const port = 3000;
-const storage = multer.diskStorage({
-    destination: async (req, file, cb) => {
-        const dir = "storage/post/img";
-        try {
-            await fs.mkdir(dir, { recursive: true });
-            cb(null, dir);
-        } catch (error) {
-            cb(error);
-        }
-    },
-    filename: (req, file, cb) => {
-        const uniqueName = Date.now() + path.extname(file.originalname);
-        cb(null, uniqueName);
-    },
-});
-
-const upload = multer({ storage });
 
 app.use(json());
 app.use(express.static("storage"));
@@ -58,89 +32,7 @@ app.get("/posts", async (req, res) => {
     });
 });
 
-app.get("/posts/:id", async (req, res, next) => {
-    try {
-        const post = await getDetailData(req.params.id);
-
-        res.status(200).json({
-            success: true,
-            message: "Berhasil menampilkan detail data post.",
-            data: post,
-        });
-    } catch (error) {
-        next(error);
-    }
-});
-
-app.post("/posts", upload.single("cover"), async (req, res, next) => {
-    try {
-        const { title, content, categoryIds } = req.body;
-        const cover = req.file;
-        const post = await insertDataPosts(title, content, cover, categoryIds);
-
-        res.status(201).json({
-            success: true,
-            message: "Data berhasil dibuat.",
-            data: post,
-        });
-    } catch (error) {
-        next(error);
-    }
-});
-
-app.patch("/posts", (req, res, next) => {
-    next(
-        Object.assign(new Error("post id pada url wajib diisi."), {
-            status: 400,
-        }),
-    );
-});
-
-app.patch("/posts/:id", upload.single("cover"), async (req, res, next) => {
-    try {
-        const postId = req.params.id;
-        const { title, content, categoryIds } = req.body;
-        const cover = req.file;
-        const post = await updateDataPosts(
-            title,
-            content,
-            cover,
-            postId,
-            categoryIds,
-        );
-
-        res.status(200).json({
-            success: true,
-            message: "Data berhasil diubah.",
-            data: post,
-        });
-    } catch (error) {
-        next(error);
-    }
-});
-
-app.delete("/posts", (req, res, next) => {
-    next(
-        Object.assign(new Error("post id pada url wajib diisi."), {
-            status: 400,
-        }),
-    );
-});
-
-app.delete("/posts/:id", async (req, res, next) => {
-    try {
-        const post = await deleteDataPosts(req.params.id);
-
-        res.status(200).json({
-            success: true,
-            message: "Data berhasil dihapus.",
-            data: post,
-        });
-    } catch (error) {
-        next(error);
-    }
-});
-
+app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
 
 app.use((error, req, res, next) => {

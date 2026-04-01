@@ -3,11 +3,13 @@ import pool from "../utils/db.js";
 
 async function selectData() {
     try {
-        const sqlStatement = `SELECT posts.id, posts.title, posts.content, posts.cover, GROUP_CONCAT(categories.name SEPARATOR ", ") AS categories, posts.created_at, posts.updated_at FROM post_categories LEFT JOIN posts ON post_categories.post_id = posts.id LEFT JOIN categories ON post_categories.category_id = categories.id GROUP BY posts.id`;
+        const sqlStatement = `SELECT posts.id, posts.title, posts.content, posts.cover, GROUP_CONCAT(categories.name SEPARATOR ", ") AS categories, posts.created_at, posts.updated_at FROM posts LEFT JOIN post_categories ON post_categories.post_id = posts.id LEFT JOIN categories ON post_categories.category_id = categories.id GROUP BY posts.id`;
 
         const [rows] = await pool.query(sqlStatement);
+
         rows.forEach((row) => {
             row.cover = row.cover ? `http://localhost:3000/${row.cover}` : null;
+            row.categories = row.categories ? row.categories.split(", ") : [];
         });
 
         return rows;
@@ -18,19 +20,20 @@ async function selectData() {
 
 async function detailData(postId) {
     try {
-        const sqlStatement = `SELECT posts.id, posts.title, posts.content, posts.cover, GROUP_CONCAT(categories.name SEPARATOR ", ") AS categories, posts.created_at, posts.updated_at FROM post_categories LEFT JOIN posts ON post_categories.post_id = posts.id LEFT JOIN categories ON post_categories.category_id = categories.id WHERE posts.id = ? GROUP BY posts.id`;
+        const sqlStatement = `SELECT posts.id, posts.title, posts.content, posts.cover, GROUP_CONCAT(categories.name SEPARATOR ", ") AS categories, posts.created_at, posts.updated_at FROM posts LEFT JOIN post_categories ON post_categories.post_id = posts.id LEFT JOIN categories ON post_categories.category_id = categories.id WHERE posts.id = ? GROUP BY posts.id`;
 
         const [rows] = await pool.query(sqlStatement, [postId]);
-
-        rows.forEach((row) => {
-            row.cover = row.cover ? `http://localhost:3000/${row.cover}` : null;
-        });
 
         if (rows.length === 0) {
             throw Object.assign(new Error("post tidak ditemukan."), {
                 status: 404,
             });
         }
+
+        rows.forEach((row) => {
+            row.cover = row.cover ? `http://localhost:3000/${row.cover}` : null;
+            row.categories = row.categories ? row.categories.split(", ") : [];
+        });
 
         return rows;
     } catch (error) {
