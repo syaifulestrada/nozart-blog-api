@@ -4,7 +4,7 @@ import {
     insertDataCategories,
     updateDataCategories,
     deleteDataCategories,
-} from "../controllers/categorycontroller.js";
+} from "../controllers/category.controller.js";
 
 const router = express.Router();
 
