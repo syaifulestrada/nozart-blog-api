@@ -8,7 +8,7 @@ import {
     insertDataPosts,
     updateDataPosts,
     deleteDataPosts,
-} from "../controllers/postcontroller.js";
+} from "../controllers/post.controller.js";
 
 const storage = multer.diskStorage({
     destination: async (req, file, cb) => {
@@ -32,17 +32,12 @@ const upload = multer({ storage });
 router.get("/", async (req, res) => {
     const posts = await getDataPosts();
 
-    if (posts.length === 0) {
-        res.status(200).json({
-            success: true,
-            message: "Data post belum ada.",
-            data: posts,
-        });
-    }
-
     res.status(200).json({
         success: true,
-        message: "Data post berhasil ditampilkan.",
+        message:
+            posts.length === 0
+                ? "Data post belum ada."
+                : "Data post berhasil ditampilkan.",
         data: posts,
     });
 });

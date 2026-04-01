@@ -4,7 +4,7 @@ import {
     updateData,
     deleteData,
     detailData,
-} from "../models/post.js";
+} from "../models/post.model.js";
 
 async function getDataPosts() {
     return await selectData();

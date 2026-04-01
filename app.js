@@ -22,16 +22,6 @@ app.get("/", (req, res) => {
     res.json("Hello World!");
 });
 
-app.get("/posts", async (req, res) => {
-    const posts = await getDataPosts();
-
-    res.status(200).json({
-        success: true,
-        message: "Data berhasil ditampilkan.",
-        data: posts,
-    });
-});
-
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
 
