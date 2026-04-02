@@ -6,8 +6,8 @@ import {
 } from "../models/category.model.js";
 
 class CategoryService {
-    static async index() {
-        return selectData();
+    static async index({ name }) {
+        return selectData({ name });
     }
 
     static async store(name) {

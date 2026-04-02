@@ -10,7 +10,8 @@ const router = express.Router();
 
 router.get("/", async (req, res, next) => {
     try {
-        const category = await index();
+        const name = req.query.name ?? "";
+        const category = await index({ name });
 
         res.status(200).json({
             success: true,

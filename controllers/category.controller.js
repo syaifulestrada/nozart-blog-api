@@ -1,7 +1,7 @@
 import CategoryService from "../services/category.service.js";
 
-function index() {
-    return CategoryService.index();
+function index({ name }) {
+    return CategoryService.index({ name });
 }
 
 function store(name) {

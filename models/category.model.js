@@ -1,10 +1,10 @@
 import pool from "../utils/db.js";
 
-async function selectData() {
+async function selectData({ name }) {
     try {
-        const sqlSelectStatement = `SELECT * FROM categories`;
+        const sqlSelectStatement = `SELECT * FROM categories WHERE NAME LIKE ?`;
 
-        const [rows] = await pool.query(sqlSelectStatement);
+        const [rows] = await pool.query(sqlSelectStatement, [`%${name}%`]);
 
         return rows;
     } catch (error) {
@@ -46,7 +46,7 @@ async function deleteData(id) {
     try {
         const sqlDeleteStatement = `DELETE FROM categories WHERE id = ?`;
 
-        const [result] = await pool.query(sqlDeleteStatement, id);
+        const [result] = await pool.query(sqlDeleteStatement, [id]);
 
         if (result.affectedRows === 0) {
             throw Object.assign(new Error("category tidak ditemukan."), {

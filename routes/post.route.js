@@ -31,7 +31,7 @@ const upload = multer({ storage });
 
 router.get("/", async (req, res, next) => {
     try {
-        let title = req.query.title ?? "";
+        const title = req.query.title ?? "";
         const posts = await index({ title });
 
         res.status(200).json({
