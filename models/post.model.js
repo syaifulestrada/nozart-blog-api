@@ -1,11 +1,11 @@
 import { unlink } from "fs/promises";
 import pool from "../utils/db.js";
 
-async function selectData() {
+async function selectData({ query }) {
     try {
-        const sqlStatement = `SELECT posts.id, posts.title, posts.content, posts.cover, GROUP_CONCAT(categories.name SEPARATOR ", ") AS categories, posts.created_at, posts.updated_at FROM posts LEFT JOIN post_categories ON post_categories.post_id = posts.id LEFT JOIN categories ON post_categories.category_id = categories.id GROUP BY posts.id`;
+        const sqlStatement = `SELECT posts.id, posts.title, posts.content, posts.cover, GROUP_CONCAT(categories.name SEPARATOR ", ") AS categories, posts.created_at, posts.updated_at FROM posts LEFT JOIN post_categories ON post_categories.post_id = posts.id LEFT JOIN categories ON post_categories.category_id = categories.id WHERE posts.title LIKE ? GROUP BY posts.id`;
 
-        const [rows] = await pool.query(sqlStatement);
+        const [rows] = await pool.query(sqlStatement, [`%${query}%`]);
 
         rows.forEach((row) => {
             row.cover = row.cover ? `http://localhost:3000/${row.cover}` : null;

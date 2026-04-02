@@ -30,7 +30,8 @@ const router = express.Router();
 const upload = multer({ storage });
 
 router.get("/", async (req, res) => {
-    const posts = await index();
+    let query = req.query.q ?? "";
+    const posts = await index({ query });
 
     res.status(200).json({
         success: true,
