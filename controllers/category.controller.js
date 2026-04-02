@@ -1,31 +1,26 @@
-import {
-    selectData,
-    insertData,
-    updateData,
-    deleteData,
-} from "../models/category.model.js";
+import CategoryService from "../services/category.service.js";
 
-async function index() {
-    return await selectData();
+function index() {
+    return CategoryService.index();
 }
 
-async function store(name) {
+function store(name) {
     if (!name) {
         throw Object.assign(new Error("name wajib diisi."), { status: 400 });
     }
 
-    return await insertData(name);
+    return CategoryService.store(name);
 }
 
-async function update(name, id) {
+function update(categoryId, name) {
     if (!name) {
         throw Object.assign(new Error("name wajib diisi."), { status: 400 });
     }
-    return await updateData(name, id);
+    return CategoryService.update(categoryId, name);
 }
 
-async function destroy(id) {
-    return await deleteData(id);
+function destroy(categoryId) {
+    return CategoryService.destroy(categoryId);
 }
 
 export { index, store, update, destroy };

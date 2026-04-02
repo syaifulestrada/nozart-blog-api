@@ -49,7 +49,7 @@ router.patch("/", (req, res, next) => {
 
 router.patch("/:id", async (req, res, next) => {
     try {
-        const category = await update(req.body.name, req.params.id);
+        const category = await update(req.params.id, req.body.name);
 
         res.status(201).json({
             success: true,
