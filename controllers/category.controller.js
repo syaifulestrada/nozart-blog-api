@@ -5,11 +5,11 @@ import {
     deleteData,
 } from "../models/category.model.js";
 
-async function getDataCategories() {
+async function index() {
     return await selectData();
 }
 
-async function insertDataCategories(name) {
+async function store(name) {
     if (!name) {
         throw Object.assign(new Error("name wajib diisi."), { status: 400 });
     }
@@ -17,20 +17,15 @@ async function insertDataCategories(name) {
     return await insertData(name);
 }
 
-async function updateDataCategories(name, id) {
+async function update(name, id) {
     if (!name) {
         throw Object.assign(new Error("name wajib diisi."), { status: 400 });
     }
     return await updateData(name, id);
 }
 
-async function deleteDataCategories(id) {
+async function destroy(id) {
     return await deleteData(id);
 }
 
-export {
-    getDataCategories,
-    insertDataCategories,
-    updateDataCategories,
-    deleteDataCategories,
-};
+export { index, store, update, destroy };
