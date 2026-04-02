@@ -29,18 +29,22 @@ const storage = multer.diskStorage({
 const router = express.Router();
 const upload = multer({ storage });
 
-router.get("/", async (req, res) => {
-    let title = req.query.title ?? "";
-    const posts = await index({ title });
+router.get("/", async (req, res, next) => {
+    try {
+        let title = req.query.title ?? "";
+        const posts = await index({ title });
 
-    res.status(200).json({
-        success: true,
-        message:
-            posts.length === 0
-                ? "Data post belum ada."
-                : "Data post berhasil ditampilkan.",
-        data: posts,
-    });
+        res.status(200).json({
+            success: true,
+            message:
+                posts.length === 0
+                    ? "Data post belum ada."
+                    : "Data post berhasil ditampilkan.",
+            data: posts,
+        });
+    } catch (error) {
+        next(error);
+    }
 });
 
 router.get("/show/:id", async (req, res, next) => {
