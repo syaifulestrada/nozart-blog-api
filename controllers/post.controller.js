@@ -1,7 +1,7 @@
 import PostService from "../services/post.service.js";
 
-function index({ query }) {
-    return PostService.index({ query });
+function index({ title }) {
+    return PostService.index({ title });
 }
 
 function show(postId) {

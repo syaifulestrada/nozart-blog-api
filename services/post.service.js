@@ -7,8 +7,8 @@ import {
 } from "../models/post.model.js";
 
 class PostService {
-    static async index({ query }) {
-        return selectData({ query });
+    static async index({ title }) {
+        return selectData({ title });
     }
 
     static async show(postId) {
