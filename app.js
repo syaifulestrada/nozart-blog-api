@@ -1,9 +1,16 @@
 import express, { json } from "express";
+import cors from "cors";
 import postRoute from "./routes/post.route.js";
 import categoryRoute from "./routes/category.route.js";
 
 const app = express();
 const port = 3000;
+
+app.use(
+    cors({
+        origin: "http://localhost:5173",
+    }),
+);
 
 app.use(json());
 app.use(express.static("storage"));
