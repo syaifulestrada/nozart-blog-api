@@ -31,7 +31,9 @@ async function detailData(postId) {
         }
 
         rows.forEach((row) => {
-            row.cover = row.cover ? `http://localhost:3000/${row.cover}` : null;
+            row.cover = row.cover
+                ? `${process.env.BASE_URL}/${row.cover.replace(/\\/g, "/")}`
+                : null;
             row.categories = row.categories ? row.categories.split(", ") : [];
         });
 

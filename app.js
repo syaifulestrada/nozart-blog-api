@@ -13,7 +13,7 @@ app.use(
 );
 
 app.use(json());
-app.use(express.static("storage"));
+app.use("/storage", express.static("storage"));
 
 app.use((req, res, next) => {
     const apiKey = req.headers["x-api-key"];
